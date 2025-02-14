@@ -1,3 +1,3 @@
 from bookshelf.models import Book
-
-Book.objects.filter(id=1).delete()
+book = Book.objects.get(id=1)
+book.delete()
