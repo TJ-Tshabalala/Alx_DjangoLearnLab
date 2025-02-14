@@ -1,3 +1,3 @@
 from bookshelf.models import Book
 
-Book.objects.filter(id=1).update(title="Nineteen Eighty-Four)
+Book.objects.filter(id=1).update("book.title")
