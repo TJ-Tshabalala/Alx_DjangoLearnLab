@@ -1,13 +1,12 @@
 # relationship_app/views.py
 
 from django.shortcuts import render, redirect
-from django.contrib.auth import  login
-from django.contrib.auth.forms import  UserCreationForm
 from django.http import HttpResponse
 from django.views.generic.detail import DetailView
 from .models import Book
 from .models import Library
-
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm
 def list_books(request):
     """Function-based view to list all books with their titles and authors."""
     books = Book.objects.all()
