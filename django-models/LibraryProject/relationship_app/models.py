@@ -19,7 +19,9 @@ class Library(models.Model):
 class Librarian(models.Model):
     name = models.CharField(max_length = 100)
     library = models.OneToOneField(Library,on_delete = models.CASCADE)
-    class UserProfile(models.Model):
+
+
+class UserProfile(models.Model):
     USER_ROLES = (
         ('Admin', 'Admin'),
         ('Librarian', 'Librarian'),
@@ -39,4 +41,3 @@ def create_user_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.userprofile.save()
-
