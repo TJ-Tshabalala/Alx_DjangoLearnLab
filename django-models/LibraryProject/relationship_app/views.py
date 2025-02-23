@@ -1,10 +1,14 @@
+# relationship_app/views.py
+
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Book
 from django.views.generic import DetailView
-from .models import Library
+from .models import Book, Library
 
-# Create your views here.
+def list_books(request):
+    """Function-based view to list all books with their titles and authors."""
+    books = Book.objects.all()
+    return render(request, 'relationship_app/list_books.html', {'books': books})
 
 class LibraryDetailView(DetailView):
     model = Library
@@ -13,16 +17,6 @@ class LibraryDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['books'] = Book.objects.all()
+        # Ensure book.author.name works in your template
+        # by making sure books have authors.
         return context
-
-def list_book(request):
-
-    books = Book.objects.all()
-    book_list = ""
-
-    for book in books:
-        author = ", ".joint([author.name for author in book.authors.all()])
-        book_list += f"{book.title} - {authors}\n"
-
-    return HttpResponse(book_list, content_type="tet/plain")
