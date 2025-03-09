@@ -3,7 +3,7 @@ from rest_framework import generics
 from .models import Book
 from .serializers import BookSerializer
 from django.urls import path
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets.ModelViewSet
 
 
 
