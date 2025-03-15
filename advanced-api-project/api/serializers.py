@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from .models import Book, Author
-from rest_framework.serializers import ModelSerializer
-from django.core.exceptions import ValidationError
+from rest_framework.serializers import ModelSerializer, ValidationError
 from datetime import date
 
 def validate_publication_date(value):
