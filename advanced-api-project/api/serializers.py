@@ -1,14 +1,17 @@
 from rest_framework import serializers
 from .models import Book, Author
-from rest_framework.serializers import ModelSerializer, ValidationError
+from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ValidationError
 from datetime import date
 
-def validate_publication_date(value):
-    """
+class BookSerializerValidation(serializers.ValidationError):
+
+    def validate_publication_date(value):
+        """
         Validates that the given publication date is not in the future.
     """
-    if value > date.today():
-        raise ValidationError('Publication date cannnot be in the future.')
+        if value > date.today():
+            raise ValidationError('Publication date cannnot be in the future.')
 
 class BookSerializer(serializers.ModelSerializer):
     """
