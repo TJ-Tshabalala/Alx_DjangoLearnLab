@@ -14,7 +14,7 @@ class BookSerializerValidation(serializers.ValidationError):
             raise ValidationError('Publication date cannnot be in the future.')
 
 class BookSerializer(serializers.ModelSerializer):
-    author = AuthorSerializer(read_only=True)
+    author = AuthorSerializer(many=True,read_only=True)
     """
         Serializer for Book Model.
         Converts Book model instances to and from JSON representations.
