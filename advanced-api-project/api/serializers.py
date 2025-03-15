@@ -14,7 +14,7 @@ class BookSerializerValidation(serializers.ValidationError):
             raise ValidationError('Publication date cannnot be in the future.')
 
 class BookSerializer(serializers.ModelSerializer):
-    author = AuthorSerializer(many=True,read_only=True)
+    author = AuthorSerializer(many=True, read_only=True) # type: ignore
     """
         Serializer for Book Model.
         Converts Book model instances to and from JSON representations.
@@ -30,7 +30,7 @@ class AuthorSerializer(serializers.ModelSerializer):
     """Serializer for Author model.
         Converts Author model instances to and from JSON representations.
     """
-    books = BookSerializer(many=True, readonly=True)
+    books = BookSerializer(many=True, read_only=True)
     class Meta:
         model = Author
         fields = '__name__'
