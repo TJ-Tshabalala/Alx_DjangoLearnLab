@@ -14,22 +14,23 @@ class BookSerializerValidation(serializers.ValidationError):
             raise ValidationError('Publication date cannnot be in the future.')
 
 class BookSerializer(serializers.ModelSerializer):
+    author = AuthorSerializer(read_only=True)
     """
         Serializer for Book Model.
         Converts Book model instances to and from JSON representations.
         Includes validation for the publication_date field
         Handles the relationship with the Author model.
     """    
-    publication_date = serializers.DateField(validators=[validate_publication_date])
+    publication_date = serializers.DateField(validators=[publication_date])
     class Meta:
         model = Book
         fields = '__all__'
-        
         
 class AuthorSerializer(serializers.ModelSerializer):
     """Serializer for Author model.
         Converts Author model instances to and from JSON representations.
     """
+    books = BookSerializer(many=True, readonly=True)
     class Meta:
         model = Author
         fields = '__name__'
