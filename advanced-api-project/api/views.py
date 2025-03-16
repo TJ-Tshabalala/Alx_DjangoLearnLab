@@ -11,9 +11,9 @@ class BookListCreateView(generics.ListCreateAPIView):
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['title', 'author', 'publication_date__year'] # Allow filtering by year
+    filterset_fields = ['title', 'author', 'publication_year'] # Allow filtering by year
     search_fields = ['title', 'author__name']  # Search title and author name
-    ordering_fields = ['title', 'publication_date'] # Allow ordering by title and publication date
+    ordering_fields = ['title', 'publication_year'] # Allow ordering by title and publication date
 
 class BookRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Book.objects.all()
