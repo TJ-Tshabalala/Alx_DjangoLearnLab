@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.generic.list import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from .models import Book
-
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 class BookListView(ListView):
     model = Book
     template_name = 'book_list.html'
