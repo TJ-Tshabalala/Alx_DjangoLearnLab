@@ -4,6 +4,7 @@ from django.urls import reverse_lazy
 from .models import Book
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 
 @method_decorator(login_required, name='dispatch')
 class BookListView(ListView):
