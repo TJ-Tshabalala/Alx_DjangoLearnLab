@@ -3,15 +3,16 @@ from rest_framework.test import APITestCase
 from rest_framework import status
 from django.contrib.auth.models import User
 from .models import Book, Author
-from .serializers import BookSerializer
 from django.urls import reverse
 
 class BookAPITestCase(APITestCase):
     def setUp(self):
-        self.user = User.objects.create_user(username='testuser', password='testpassword')
+        self.username = 'testuser'
+        self.password = 'testpassword'
+        self.user = User.objects.create_user(username=self.username, password=self.password)
         self.author = Author.objects.create(name='Test Author')
         self.book = Book.objects.create(title='Test Book', author=self.author, publication_date='2023-01-01')
-        self.client.force_authenticate(user=self.user)
+        self.client.login(username=self.username, password=self.password) #Using self.client.login
 
     def test_book_list_create(self):
         url = reverse('book-list-create')
@@ -61,7 +62,7 @@ class BookAPITestCase(APITestCase):
         self.assertEqual(response.data[0]['title'], 'Another Book')
 
     def test_unauthenticated_read_only(self):
-        self.client.force_authenticate(user=None)
+        self.client.logout() #logout the client.
         url = reverse('book-list-create')
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
