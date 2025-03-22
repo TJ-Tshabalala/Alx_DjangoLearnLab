@@ -12,48 +12,26 @@ from .forms import CustomUserCreationForm
 from django.contrib import messages
 
 
-def post_detail(request, post_id):
-    post = get_object_or_404(Post, pk=post_id)
-    comments = post.comments.all().order_by('-created_at')
-    form = CommentForm
-    return render(request, 'blog/post_detail.html', {'post': post, 'comments': comments, 'forms': form})
-@login_required
-def add_comment(request, post_id):
-    post = get_object_or_404(Post, pk=post_id)
-    if request.method == 'POST':
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save()(commit = False)
-            comment.post = post
-            comment.author = request.user
-            comment.save()
-            return redirect('post_detail', post_id=post_id)
-        else:
-            form = CommentForm()
-            return render(request, 'blog/add_comment.html', {'form': form, 'post':post})
-        
-@login_required
-def edit_comment(request, comment_id):
-    comment = get_object_or_404(Comment, pk=comment_id)
-    if comment.author != request.user:
-        return HttpResponseForbidden("You do not have permission to edit this comment.")
-    if request.method == 'POST':
-        form = CommentForm(request.POST, instance=comment)
-        if form.is_valid():
-            form.save()
-            return redirect('post_detail', post_id=comment.post.id)
-    else:
-        form = CommentForm(instance=comment)
-    return render(request, 'blog/edit_comment.html', {'form': form, 'comment': comment})
+class CommentCreateView(LoginRequiredMixin, CreateViewe):
+    model = Comment
+    template_name = 'blog/add_comment.html'
+    form_class = CommentForm
 
-@login_required
-def delete_comment(request, comment_id):
-    comment = get_object_or_404(Comment, pk=comment_id)
-    if comment.author != request.user:
-        return HttpResponseForbidden("You do not have permission to delete this comment.")
-    post_id = comment.post.id
-    comment.delete()
-    return redirect('post_detail', post_id=post_id)
+class CommentDeleteView(LoginRequiredMixin, DeleteView):
+    model = Comment
+    template_name = 'blog/confirm_delete.html'
+    success_url = reverse_lazy('content')
+
+class CommentUpdateView(LoginRequiredMixin, UpdateView):
+    model = Comment
+    template_name = 'blog/edit_comment.html'
+    form_class = CommentForm
+
+    def test_func(self):
+        comment = self.get_object()
+        return self.request.author.username == comment.author
+    
+
 class PostListView(ListView):
     model = Post
     template_name = 'blog/post_list.html'
