@@ -12,7 +12,7 @@ from .forms import CustomUserCreationForm
 from django.contrib import messages
 
 
-class CommentCreateView(LoginRequiredMixin, CreateViewe):
+class CommentCreateView(LoginRequiredMixin, CreateView):
     model = Comment
     template_name = 'blog/add_comment.html'
     form_class = CommentForm
